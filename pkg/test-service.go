@@ -7,6 +7,7 @@ import (
 	"from_scratch_wep_api/models"
 	"github.com/go-chi/chi/v5"
 	"github.com/thedevsaddam/renderer"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 )
@@ -15,8 +16,8 @@ type TestService struct {
 	Fetcher internal.TestRepository
 }
 
-func newServiceTest() TestService {
-	return TestService{Fetcher: internal.NewTestFetcher()}
+func NewServiceTest(db *gorm.DB) TestService {
+	return TestService{Fetcher: internal.NewTestFetcher(db)}
 }
 func (t TestService) Routes() chi.Router {
 	r := chi.NewRouter()
@@ -51,7 +52,12 @@ func (t TestService) PostTest(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(rs.Name)
 
-	err = json.NewEncoder(w).Encode(&rs)
+	test, err := t.Fetcher.CreateTest(rs)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.NewEncoder(w).Encode(&test)
 	if err != nil {
 		log.Fatal(err)
 	}
