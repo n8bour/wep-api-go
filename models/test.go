@@ -1,9 +1,7 @@
 package models
 
-import "gorm.io/gorm"
-
-type Test struct {
-	gorm.Model
+type TestRequest struct {
+	ID       string `json:"int"`
 	Name     string `json:"name"`
 	Quantity uint   `json:"quantity"`
 }
