@@ -1,7 +1,7 @@
 # SIMPLE DUMMY REST API 
-###### *(without using a framework)*
+###### *(with some Tools)*
 
-Simple rest api without using web frameworks, although using some tools made by the community
+Simple rest api with some web tools
 
 - `Chi` routing tool
 - `Renderer` response renderer

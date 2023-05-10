@@ -1,8 +1,8 @@
 package db
 
-import "from_scratch_wep_api/models"
+import "from_scratch_wep_api/types"
 
 type Storer interface {
-	GetTest() ([]*models.TestRequest, error)
-	CreateTest(test models.TestRequest) (models.TestRequest, error)
+	GetTests() ([]*types.TestRequest, error)
+	CreateTest(test types.TestRequest) (types.TestRequest, error)
 }
