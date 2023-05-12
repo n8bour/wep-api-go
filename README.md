@@ -7,4 +7,5 @@ Simple rest api with some web tools
 - `Renderer` response renderer
 - `Viper` read from config files (still not included)
 - `GORM` ORM for database connection
+- `Gingko` Tests framework
 - ...
