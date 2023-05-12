@@ -33,13 +33,13 @@ jobs:
 
     - name: Install dependencies
       run: | 
-        go get github.com/go-chi/chi/v5 
-        go get github.com/onsi/ginkgo/v2
-        go get github.com/onsi/gomega/...
-        go get github.com/spf13/viper
-        go get github.com/thedevsaddam/renderer
-        go get gorm.io/driver/postgres
-        go get gorm.io/gorm
+        go get -u github.com/go-chi/chi/v5 
+        go get -u github.com/onsi/ginkgo/v2
+        go get -u github.com/onsi/gomega/...
+        go get -u github.com/spf13/viper
+        go get -u github.com/thedevsaddam/renderer
+        go get -u gorm.io/driver/postgres
+        go get -u gorm.io/gorm
 
     - name: Build
       run: go build -v ./...
