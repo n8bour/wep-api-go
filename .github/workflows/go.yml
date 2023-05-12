@@ -46,5 +46,10 @@ jobs:
     - name: Build
       run: go build -v ./...
 
+    - name: Lint
+      run: |
+        go vet .
+        golint .
+
     - name: Test
       run: go test -v ./...
