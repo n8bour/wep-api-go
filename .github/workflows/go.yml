@@ -34,7 +34,6 @@ jobs:
     - name: Install dependencies
       run: |
         go version
-        go get -u .
         go get -u golang.org/x/lint/golint
         go get -u github.com/go-chi/chi/v5 
         go get -u github.com/onsi/ginkgo/v2
