@@ -8,3 +8,6 @@ clean:
 run:
 	@go build -o bin/app cmd/main.go
 	@./bin/app
+
+test:
+	@go test ./... -v

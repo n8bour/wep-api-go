@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"from_scratch_wep_api/config"
+	"from_scratch_wep_api/internal/db"
 	"from_scratch_wep_api/pkg"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -18,8 +19,8 @@ func main() {
 	var cfg = config.GetConfig()
 
 	routeHandler.Group(func(r chi.Router) {
-		// using auth /JWT
-		var testHandler = pkg.NewTestHandler(cfg)
+		// using auth /JWT && maybe change the way to pass postgres
+		var testHandler = pkg.NewTestHandler(db.NewPostgresProvider(cfg))
 		r.Mount("/api/v1", testHandler.Routes())
 	})
 

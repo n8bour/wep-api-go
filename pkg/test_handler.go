@@ -3,8 +3,8 @@ package pkg
 import (
 	"context"
 	"encoding/json"
-	"from_scratch_wep_api/config"
 	"from_scratch_wep_api/internal"
+	"from_scratch_wep_api/internal/db"
 	"from_scratch_wep_api/types"
 	"github.com/go-chi/chi/v5"
 	"github.com/thedevsaddam/renderer"
@@ -13,12 +13,14 @@ import (
 )
 
 type TestHandler struct {
-	svc *internal.TestService
+	svc    *internal.TestService
+	render *renderer.Render
 }
 
-func NewTestHandler(cfg *config.Config) *TestHandler {
+func NewTestHandler(store db.Storer) *TestHandler {
 	return &TestHandler{
-		svc: internal.NewTestService(cfg),
+		svc:    internal.NewTestService(store),
+		render: &renderer.Render{},
 	}
 }
 
@@ -36,13 +38,12 @@ func (t *TestHandler) Routes() chi.Router {
 
 func (t *TestHandler) GetTests(ctx context.Context) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set(renderer.ContentType, renderer.ContentJSON)
 		test, err := t.svc.GetTests(ctx)
 		if err != nil {
 			log.Fatal(" error fetching test")
 		}
 
-		err = json.NewEncoder(w).Encode(test)
+		err = t.render.JSON(w, http.StatusOK, test)
 		if err != nil {
 			log.Fatal("error encoding...", err)
 		}
@@ -51,20 +52,19 @@ func (t *TestHandler) GetTests(ctx context.Context) http.HandlerFunc {
 
 func (t *TestHandler) PostTest(ctx context.Context) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set(renderer.ContentType, renderer.ContentJSON)
 
 		tr := types.TestRequest{}
 		err := json.NewDecoder(r.Body).Decode(&tr)
 		if err != nil {
-			log.Fatal(err)
+			_ = t.render.JSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		}
 
 		test, err := t.svc.CreateTest(ctx, tr)
 		if err != nil {
-			log.Fatal(err)
+			_ = t.render.JSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		}
 
-		err = json.NewEncoder(w).Encode(&test)
+		err = t.render.JSON(w, http.StatusOK, test)
 		if err != nil {
 			log.Fatal(err)
 		}
