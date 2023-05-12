@@ -40,6 +40,8 @@ jobs:
 
     - name: Build
       run: go build -v ./...
+      env:
+        GOPATH: /home/runner/work/web-api-go/go
 
     - name: Test
       run: go test -v ./...
